@@ -177,14 +177,15 @@ class AuthMiddleware(object):
         tenant_id = match.get(PROJECT_KEY)
         for entry in mapped_ra:
             action = entry.get("action")
-            resource = mapping.get("resource_format")
             resource_type = entry.get(RESOURCE_TYPE_KEY)
-            if not action or not resource or not resource_type:
+            if not action or not resource_type:
                 self._LOG.critical('action/resource details missing '
                                        'in mapping file')
                 return self._do_503_error(env, start_response)
-            resource = resource.replace(TENANT_KEY, tenant_id)
-            resource = resource.replace(RESOURCE_TYPE_KEY, resource_type)
+            # extract the common prefix from the action param
+            # eg. jrn:jcs:sbs
+            prefix = ":".join(action.split(":")[:3])
+            resource = ":".join([prefix, tenant_id, resource_type])
             isResourceIdRequired = entry.get("isResourceIdRequired")
             isResourceIdRequired = isResourceIdRequired.lower() == "true" \
                                      if isResourceIdRequired else False
