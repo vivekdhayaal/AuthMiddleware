@@ -1,0 +1,8 @@
+Package: jiocloud-auth-middleware
+Version: 0.1-1
+Section: non-free
+Priority: optional
+Architecture: all
+Installed-Size: 1
+Maintainer: Vivek Dhayaal <vivek.kayarohanam@ril.com>
+Description: Jiocloud Authorization Middleware
